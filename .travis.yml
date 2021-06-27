@@ -15,15 +15,15 @@ after_success:
 - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
 - cd dist
 - cp index.html 404.html
-- echo X_BAN:$X_BAN
-- sed -i "s/X_BAN:\"$X_BAN\"\,/ /g" umi.js
+- echo GH_TOKEN:$GH_TOKEN
+- sed -i "s/GH_TOKEN:\"$GH_TOKEN\"\,/ /g" umi.js
 deploy:
   provider: pages
   skip_cleanup: true
-  github_token: "$X_BAN"
+  github_token: "$GH_TOKEN"
   on:
     branch: master
-  repo: jsBan/xBan
+  repo: jsBan/blog
   target_branch: gh-pages
   local_dir: dist
 env:
