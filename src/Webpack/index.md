@@ -2,7 +2,7 @@
 
 ## webpack
 
-<p> webpack 是 js 应用程序的打包工具，如果要处理其他文件必须使用 loader 或 plugin，两者的区别简单来说 loader 的功能比较少（将文件转化成 webpack 能够识别的），plugin 能做的东西更多（打包优化、压缩、定义环境变量）</p>
+<p> webpack 是模块打包的工具，如果要处理其他文件必须使用 loader 或 plugin，两者的区别简单来说 loader 的功能比较少（将文件转化成 webpack 能够识别的），plugin 能做的东西更多（打包优化、压缩、定义环境变量）</p>
 
 <p>官方文档:<a href="https://www.webpackjs.com/concepts/#%E5%85%A5%E5%8F%A3-entry-">https://www.webpackjs.c om/concepts/#%E5%85%A5%E5%8F%A3-entry-</a>webpack4-0 配置打包</p>
 
@@ -113,7 +113,62 @@ module.exports = {
     mode: 'development'
 ```
 
-1、<code>development 会将 process.env.NODE_ENV 的值设置为 development</code>
-2、<code>production 会将 process.env.NODE_ENV 的值设置为 production</code>
+1、<code>development</code>：会将 process.env.NODE_ENV 的值设置为 development </br>
+2、<code>production</code>： 会将 process.env.NODE_ENV 的值设置为 production
 
 ### 4、处理文件 loader
+
+将所有类型的文件转换 webpack 可以处理的有效模块
+
+<ol>
+<li>
+<p>三种配置loader的方式</p>
+<p>1) 配置- module.rules 允许你在 webpack 配置中指定多个 loader 最好的方式:可以减少源码中的代码量，并且可以在出错时，更快地调试和定位 loader 中的问题</p>
+<p>2) 内联</p>
+
+```bash
+    import styles from `style-loader!css-loader?modules!./styles.css`
+```
+
+<p>3) CLI</p>
+
+```bash
+    webpack --module-bind jade-loader --module-bind 'css=style-loader!css-loader'
+```
+
+</li>
+<li>
+    loader  </br>
+    1) 一组链式的loader将按照相反的顺序执行，最后一个loader返回webpack所预期的js </br>
+    2) loader可以使用options对象的方式进行配置
+</li>
+
+</ol>
+
+### 5、处理 html 文件
+
+<ol>
+<li>输入!, tab键生成src/index.html</li>
+<li><code>yarn add html-webpack-plugin --dev</code>进行安装html-webpack-plugin处理html文件插件</li>
+<li>webpack.config.js中配置</li>
+
+```bash
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+plugins: [
+    //处理html文件
+    new HtmlWebpackPlugin({
+        filename: "index.html", //在目标文件下的文件名
+        template: "src/index.html", //被处理文件的路径
+    }),
+],
+```
+
+<li><code>yarn dev</code> 生成dist/index.html,并且文件中自动引入bundle.js,直接在浏览器中打开index.html,控制台将会看到输出'start learn webpack'还没有配置devsevice --open不能用 <code>"dev":"webpack --open"</code></li>
+</ol>
+
+### 6、插件 plugins 的配置使用
+
+目的： </br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在于解决 loader 无法解决的其他事项 </br>
+用法： </br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 webpack.config.js 配置中添加 plugins 属性并且传入插件实例数组
