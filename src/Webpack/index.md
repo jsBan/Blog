@@ -166,9 +166,396 @@ plugins: [
 <li><code>yarn dev</code> 生成dist/index.html,并且文件中自动引入bundle.js,直接在浏览器中打开index.html,控制台将会看到输出'start learn webpack'还没有配置devsevice --open不能用 <code>"dev":"webpack --open"</code></li>
 </ol>
 
-### 6、插件 plugins 的配置使用
+### 6、插件 plugins
 
 目的： </br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在于解决 loader 无法解决的其他事项 </br>
 用法： </br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在 webpack.config.js 配置中添加 plugins 属性并且传入插件实例数组
+
+### 7、处理 js、jsx、ts、tsx
+
+处理 ts 文件 ts-loader 一般不建议使用,建议使用 babel-laoder</br>
+原因: </br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ts-loader 官方也要换成 babel-loader,效率问题,ts-laoder 基本上接近生命周期的尾声
+
+<ol>
+<li><code>yarn add babel-loader --dev</code>安装 babel-laoder</li>
+<li><code>yarn add @babel/core @babel/preset-env @babel/preset-typescript @babel/preset-react --dev</code> 安装一些需要的预制套件</li>
+可能遇到的问题：一直安装不上这几个插件</br>
+解决方法：重启 mac 本电脑，network 才可以进行安装
+<li>webpack.config.js中配置</li>
+
+```bash
+module:{
+    rules:[
+        //处理js、jsx、ts、tsx
+        {
+            test: /\.js$|\.jsx?$|\.ts?$|\.tsx?$/, //所需要处理的文件类型
+            exclude:/node_modules/,//匹配的时候不包含node_modules包里面的内容
+            loader: "babel-laoder",
+            options:{
+                //配置预制套件
+                presets:{
+                    "@babel/preset-env",// 转化为es6的规则
+                    "@babel/preset-typescript",//转化ts的规则
+                    "@babel/preset-react",//转化jsx规则
+                }
+            }
+            cacheDirectory: true, //缓存编译后的代码
+        }
+    ]
+}
+```
+
+package.json 中配置
+
+```bash
+    "browserslist":{
+        "production":[
+            ">5%"
+        ],
+        "modern":[
+            "last 1 chrome version",
+            "last 1 firefox version"
+        ]
+    }
+```
+
+<li>index.js直接命名为index.ts, entry改为 <code>entry:"./src/index.tsx"</code></li>
+<li><code>yarn dev</code></li>
+</ol>
+
+### 8、处理 react
+
+<ol>
+<li>index.ts改为tsx</li>
+
+```bash
+    import { React } from "react"
+    import { render } from "react-dom"
+    const App = () =>{
+        return <div>11111111</div>
+    }
+    render(</App>, document.getElementById('root'))
+```
+
+入口 html 中添加如下结构
+
+```bash
+    <div id="root"></div>
+```
+
+<li><code>yarn add @types/react @types/react-dom --dev</code>安装types,解决导入react，react-dom 报错问题</li>
+<li><code>yarn add react react-dom</code>安装react、react-dom</li>
+<li><code>yarn dev</code></li>
+</ol>
+
+### 9、处理 css 样式文件
+
+css loader 只解决了 css 语法解析的问题，style-loader 解决了样式加载的问题，为我们的样式生成一个 style 标签并插入到页面中 loader 的配置顺序和加载顺序是相反的</br>
+<code>1.处理 style.css</code>
+
+<ol>
+<li>新建一个src/index.css文件</li>
+
+```bash
+    body {
+        background-color: red;
+    }
+```
+
+在 index.tsx 中导入 index.css 并加入内部样式
+
+```bash
+    import "./index.css";
+    return <span style={{fontSize: "50px"}}>use css file</span>;
+```
+
+<li><code>yarn add style-laoder css-loader --dev</code>安装响应的loader</li>
+<li>在webpack.config.js中配置如下</li>
+
+```bash
+    //处理css
+    {
+        test: /\.css?$/,
+        loader(或者use):["style-loader", "css-loader"],
+    }
+```
+
+<li><code>yarn dev</code></li>
+可能遇到的问题：报错---> configuration.module.rules[1].loader should be a non-empty string. </br>
+解决方法：将loader修改为 use
+</ol>
+
+<code>2.处理.less 文件(如果 less 文件中没有 less 语法， 只用 style 和 css loader 就可以解析了)</code>
+
+<ol>
+<li>新建一个scr/index.less文件</li>
+
+```bash
+body {
+	p {
+		background-color: blue;
+	}
+}
+.title {
+	background: yellow;
+}
+```
+
+<li>index.tsx 中导入 index.less 并加入内部样式</li>
+
+```bash
+import './index.less';
+return (
+  <>
+    <span style={{ fontSize: '50px' }}>use css file </span>
+    <p>use less file</p>
+  </>
+);
+```
+
+<li><code>yarn add less-loader less --dev </code>安装 less-loader</li>
+<li>webpack.config.js rules 中配置</li>
+
+```bash
+// 处理less文件
+{
+   test: /\.less?$/,
+   use: ["style-loader", "css-loader", "less-loader"],
+}
+```
+
+<li><code>yarn dev</code></li>
+
+为了在 index.tsx 中使用 less module 语法
+
+```bash
+import style from './index.less';
+return (
+  <>
+    <span style={{ fontSize: '50px' }}>use css file </span>
+    <p>use less file</p>
+    <div className={style.title}>use class in less file</div>
+  </>
+);
+```
+
+步骤 4 中的配置使用如下配置即可
+
+```bash
+{
+   test: /\.less?$/,
+   use: [
+      "style-loader",
+      {
+         loader: "css-loader",
+         options: {
+            importLoaders: 1,
+            modules: {
+               localIdentName: "[local]--[hash:base64:5]",
+            },
+         },
+      },
+      "less-loader",
+   ],
+}
+```
+
+<li><code>yarn dev</code></li>
+</ol>
+
+### 10、处理图片
+
+<ol>
+<li>新建一个 src/assets 文件夹添加一个 logo.png 图片并在index.tsx中引入</li>
+
+```bash
+import logo from './assets/WeChatLogo.jpeg';
+return (
+  <>
+    <span style={{ fontSize: '50px' }}>use css file </span>
+    <p>use less file</p>
+    <div className={style.title}>use class in less file</div>
+    <img src={logo} />
+  </>
+);
+
+```
+
+<li><code>yarn add file-loader --dev</code>安装file-loader</li>
+<li>webpack.config.js rules 中配置</li>
+
+```bash
+//处理图片
+{
+   test: /\.(png|jpg|gif|jpeg|woff|woff2|svg)$/,
+   loader: "file-loader",
+},
+```
+
+<li><code>yarn dev</code></li>
+
+</ol>
+
+### 11、自动刷新
+
+webpack-dev-server 可以帮我们启一个本地服务，监听工程目录文件的改动，修改源文件再次保存时,动态实时的重新打包并自动刷新浏览器
+
+<ol>
+<li><code>yarn add webpack-dev-server --dev</code> 安装 webpack-dev-server</li>
+<li>webpack.config.js 中配置</li>
+
+```bash
+target: "web", // 保存后刷新
+//dev-server
+devServer: {
+   contentBase: resolve(__dirname, "dist"), //本地服务器所加载的页面路径
+   port: 9000, // 默认是8080
+   open: true, // 浏览器中打开
+   publicPath: './dist' // 打包之后的资源路径
+},
+```
+
+<li><code>yarn dev</code></li>
+</ol>
+
+### 12、相对引用的路径@和导入的时候去掉文件后缀名
+
+<ol>
+<li>webpack.config.js 中配置</li>
+
+```bash
+resolve: {
+		//导入的时候允许不加文件后缀名
+		extensions: [".ts", ".tsx", ".js", ".jsx"],
+		//使用相对引用路径@
+		alias: {
+			"@": resolve(__dirname, "src"),
+		},
+	},
+```
+
+<li>新建 src/components/add.tsx</li>
+
+```bash
+import React from 'react';
+export default () => <div>add 组件</div>;
+```
+
+<li>index.tsx 中</li>
+
+```bash
+import logo from '@/assets/WeChatLogo.jpeg';
+import Add from '@/components/add';
+return (
+  <>
+    <span style={{ fontSize: '50px' }}>use css file </span>
+    <p>use less file</p>
+    <div className={style.title}>use class in less file</div>
+    <img src={logo} />
+    <Add />
+  </>
+);
+```
+
+<li><code>yarn dev</code></li>
+</ol>
+
+### 13、添加 typings.d.ts 和 tsconfig.json 文件 是两个固定配置的文件
+
+解决<code>import style from "./index.less"; import logo from "@/assets/WeChatLogo.jpeg" </code>有错误提示的问题 1.typings.d.ts
+
+```bash
+declare module "slash2";
+declare module "*.css";
+declare module "*.less";
+declare module "*.scss";
+declare module "*.sass";
+declare module "*.svg";
+declare module "*.png";
+declare module "*.jpg";
+declare module "*.jpeg";
+declare module "*.gif";
+declare module "*.bmp";
+declare module "*.tiff";
+declare module "mockjs";
+declare module "*.svg" {
+	export function ReactComponent(
+		props: React.SVGProps<SVGSVGElement>
+	): React.ReactElement;
+	const url: string;
+	export default url;
+}
+declare module "omit.js";
+declare module "uuid";
+
+// google analytics interface
+interface GAFieldsObject {
+	eventCategory: string;
+	eventAction: string;
+	eventLabel?: string;
+	eventValue?: number;
+	nonInteraction?: boolean;
+}
+interface Window {
+	ga: (
+		command: "send",
+		hitType: "event" | "pageview",
+		fieldsObject: GAFieldsObject | string
+	) => void;
+	reloadAuthorized: () => void;
+	loadBerlinPageCallback: () => void;
+}
+
+declare let ga: Function;
+
+declare const REACT_APP_ENV: "dev" | "dev2" | "dev3" | false;
+```
+
+2.tsconfig.json
+
+```bash
+{
+    "compilerOptions": {
+        "outDir": "build/dist",
+        "module": "esnext",
+        "target": "esnext",
+        "lib": [
+            "esnext",
+            "dom"
+        ],
+        "sourceMap": true,
+        "baseUrl": ".",
+        "jsx": "react",
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitReturns": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noUnusedLocals": true,
+        "allowJs": true,
+        "skipLibCheck": true,
+        "experimentalDecorators": true,
+        "strict": true,
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ],
+            "@@/*": [
+                "./src/.umi/*"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "build",
+        "dist",
+        "scripts",
+        "src/.umi/*",
+        "webpack",
+        "jest"
+    ]
+}
+```
