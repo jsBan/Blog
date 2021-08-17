@@ -3,7 +3,7 @@
 * transform: true
 */
   <h3>jenkins 工作流程</h3>
-  <p >
+  <p>
     <img style="width: 50%;" src="../../assets/img/branch-jenkins.png" alt=""><br>
     <br>
     <img style="width: 50%;" src="../../assets/img/shell-jenkins.png" alt="">
