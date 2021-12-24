@@ -3,6 +3,6 @@ nav:
   order: 1
 ---
 
-## Welcome ~
+## Welcome To jsBan Blog
 
-Please go to interview part and javascript part first~
+Please go to interview part and javascript part first
