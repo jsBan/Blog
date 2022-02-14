@@ -1,9 +1,9 @@
 ---
 title: 深拷贝
 nav:
-  order: 1
+  order: 2
 group:
-  order: 1
+  order: 2
 ---
 
 1. Use recursion.

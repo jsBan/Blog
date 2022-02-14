@@ -1,9 +1,8 @@
-
   <h3>jenkins 工作流程</h3>
   <p>
-    <img style="width: 50%;" src="../../assets/img/branch-jenkins.png" alt=""><br>
+    <img style="width: 50%;" src="../../../assets/img/branch-jenkins.png" alt=""><br>
     <br>
-    <img style="width: 50%;" src="../../assets/img/shell-jenkins.png" alt="">
+    <img style="width: 50%;" src="../../../assets/img/shell-jenkins.png" alt="">
   </p>
   <p>dist脚本:</p>
   <p>
@@ -19,6 +18,6 @@
   </p>
 
   <p>
-    <img style="width: 50%;" src="../../assets/img/jenkins-dist-email.png" alt=""><br>
-    <img style="width: 50%;" src="../../assets/img/jenkins-code.png" alt="">
+    <img style="width: 50%;" src="../../../assets/img/jenkins-dist-email.png" alt=""><br>
+    <img style="width: 50%;" src="../../../assets/img/jenkins-code.png" alt="">
   </p>
