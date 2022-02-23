@@ -417,35 +417,35 @@ module.exports = CopyWebPackPlugin;
   <li>myPlugin.js
   
   ```ts
-const path = require('path');
-const fs = require('fs');
-class myPlugin {
-  apply(compiler) {
-    //done 所有打包已经完成 并且输出成dist目录了
-    compiler.hooks.done.tap('myPlugin', compilation => {
-      let context = compiler.options.context;
-      //获取dist目录
-      const publicPath = path.resolve(context, 'dist');
-      //遍历打包的资源
-      compilation.toJson().assets.forEach(ast => {
-        const filePath = path.resolve(publicPath, ast.name);
-        fs.readFile(filePath, (err, file) => {
-          //替换生成新的conext
-          const newFileContext = file
-            .toString()
-            .replace('../static', 'https://epos-tl-dev3.zatech.com');
-          fs.writeFile(filePath, newFileContext, () => {
-            if (err) {
-            } else {
-              console.log('文件创建成功');
-            }
+  const path = require('path');
+  const fs = require('fs');
+  class myPlugin {
+    apply(compiler) {
+      //done 所有打包已经完成 并且输出成dist目录了
+      compiler.hooks.done.tap('myPlugin', compilation => {
+        let context = compiler.options.context;
+        //获取dist目录
+        const publicPath = path.resolve(context, 'dist');
+        //遍历打包的资源
+        compilation.toJson().assets.forEach(ast => {
+          const filePath = path.resolve(publicPath, ast.name);
+          fs.readFile(filePath, (err, file) => {
+            //替换生成新的conext
+            const newFileContext = file
+              .toString()
+              .replace('../static', 'https://epos-tl-dev3.zatech.com');
+            fs.writeFile(filePath, newFileContext, () => {
+              if (err) {
+              } else {
+                console.log('文件创建成功');
+              }
+            });
           });
         });
       });
-    });
+    }
   }
-}
-module.exports = myPlugin;
+  module.exports = myPlugin;
   ```
   </li>
   <li><code>webpack</code> 浏览器可以看到 index.html 中的引用路径被替换了</li>
