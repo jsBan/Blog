@@ -38,75 +38,75 @@ const {
   <li>新建<code>tapable.test.js</code>
   
   ```ts
-const {
-  SyncHook,
-  SyncBailHook,
-  AsyncParallelHook,
-  AsyncSeriesHook,
-} = require('tapable');
-class Lesson {
-  constructor() {
-    //初始化hook容器
-    this.hooks = {
-      //同步hook, 任务依次执行
-      //go:new SyncHook(['address'])
-      go: new SyncBailHook(['address']),
-      //异步hook
-      //AsyncParallelHook: 异步并行
-      //
-      //leave: new AsyncParallelHook(['name', 'age'])
-      //AsyncSeriesHook: 串行执行
-      leave: new AsyncParallelHook(['name', 'age']),
-    };
-  }
-  tap() {
-    //往hooks容器中注册事件/添加回调函数,将来钩子被触发相应的回调函数就会
-    //class0318 和 class0410 顺序执行
-    //call方法触发hook, 会将hook容器中的所有钩子全都触发
-    this.hooks.go.tap('class0318', address => {
-      console.log('class0318', address);
-      return 111;
-    });
-    this.hooks.go.tap('class0410', address => {
-      console.log('class0410', address);
-    });
-    //异步钩子用tab绑定也可以 意义不大
-    // this.hooks.leave.tap('class0510', (name,age) => {
-    //     console.log("class0510", name,age)
-    // })
-    // 定义异步钩子的两种方式tapAsync和tapPromise
-    //如果是并行执行 所以一秒后执行class0610, 2秒后执行class0510
-    //如果是串行执行 2秒后执行class0510 然后再一秒后执行class0610
-    this.hooks.leave.tapAsync('class0510', (name, age, cb) => {
-      setTimeout(() => {
-        console.log('class0510', name, age);
-        //异步代码执行完了 接着往下走
-        cb();
-      }, 2000);
-    });
-    this.hooks.leave.tapPromise('class0610', (name, age) => {
-      return new Promise(resolve => {
+  const {
+    SyncHook,
+    SyncBailHook,
+    AsyncParallelHook,
+    AsyncSeriesHook,
+  } = require('tapable');
+  class Lesson {
+    constructor() {
+      //初始化hook容器
+      this.hooks = {
+        //同步hook, 任务依次执行
+        //go:new SyncHook(['address'])
+        go: new SyncBailHook(['address']),
+        //异步hook
+        //AsyncParallelHook: 异步并行
+        //
+        //leave: new AsyncParallelHook(['name', 'age'])
+        //AsyncSeriesHook: 串行执行
+        leave: new AsyncParallelHook(['name', 'age']),
+      };
+    }
+    tap() {
+      //往hooks容器中注册事件/添加回调函数,将来钩子被触发相应的回调函数就会
+      //class0318 和 class0410 顺序执行
+      //call方法触发hook, 会将hook容器中的所有钩子全都触发
+      this.hooks.go.tap('class0318', address => {
+        console.log('class0318', address);
+        return 111;
+      });
+      this.hooks.go.tap('class0410', address => {
+        console.log('class0410', address);
+      });
+      //异步钩子用tab绑定也可以 意义不大
+      // this.hooks.leave.tap('class0510', (name,age) => {
+      //     console.log("class0510", name,age)
+      // })
+      // 定义异步钩子的两种方式tapAsync和tapPromise
+      //如果是并行执行 所以一秒后执行class0610, 2秒后执行class0510
+      //如果是串行执行 2秒后执行class0510 然后再一秒后执行class0610
+      this.hooks.leave.tapAsync('class0510', (name, age, cb) => {
         setTimeout(() => {
           console.log('class0510', name, age);
           //异步代码执行完了 接着往下走
-          resolve();
-        }, 1000);
+          cb();
+        }, 2000);
       });
-    });
+      this.hooks.leave.tapPromise('class0610', (name, age) => {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            console.log('class0510', name, age);
+            //异步代码执行完了 接着往下走
+            resolve();
+          }, 1000);
+        });
+      });
+    }
+    start() {
+      //触发
+      this.hooks.go.call('c318');
+      //this.hooks.leave.call('zou',18)
+      this.hooks.leave.callAsync('zou', 18, () => {
+        //所有leave 容器中的钩子都触发完了再触发
+        console.log('end~~~');
+      });
+    }
   }
-  start() {
-    //触发
-    this.hooks.go.call('c318');
-    //this.hooks.leave.call('zou',18)
-    this.hooks.leave.callAsync('zou', 18, () => {
-      //所有leave 容器中的钩子都触发完了再触发
-      console.log('end~~~');
-    });
-  }
-}
-const l = new Lesson();
-l.tap();
-l.start();
+  const l = new Lesson();
+  l.tap();
+  l.start();
   ```
   </li>
   <li><code>yarn add tapable --dev</code></li>
@@ -123,45 +123,45 @@ l.start();
   <li>新建 plugins/Plugin1
   
   ```ts
-// 在webpack 生命周期中做一些事 会保证前面的生命周期执行完，再执行后面的
-class Plugin1 {
-  apply(compiler) {
-    compiler.hooks.emit.tap('Plugin1', compilation => {
-      console.log('emit.tap 111');
-    });
-    compiler.hooks.emit.tapAsync('Plugin1', (compilation, cb) => {
-      setTimeout(() => {
+  // 在webpack 生命周期中做一些事 会保证前面的生命周期执行完，再执行后面的
+  class Plugin1 {
+    apply(compiler) {
+      compiler.hooks.emit.tap('Plugin1', compilation => {
         console.log('emit.tap 111');
-        cb();
-      }, 2000);
-    });
-    compiler.hooks.emit.tapPromise('Plugin1', (compilation, resolve) => {
-      return new Promise(resolve => {
+      });
+      compiler.hooks.emit.tapAsync('Plugin1', (compilation, cb) => {
         setTimeout(() => {
           console.log('emit.tap 111');
-          resolve();
+          cb();
         }, 2000);
       });
-    });
-    compiler.hooks.afterEmit.tap('Plugin1', compilation => {
-      console.log('afterEmit.tap 111');
-    });
-    compiler.hooks.done.tap('Plugin1', compilation => {
-      console.log('done.tap 111');
-    });
+      compiler.hooks.emit.tapPromise('Plugin1', (compilation, resolve) => {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            console.log('emit.tap 111');
+            resolve();
+          }, 2000);
+        });
+      });
+      compiler.hooks.afterEmit.tap('Plugin1', compilation => {
+        console.log('afterEmit.tap 111');
+      });
+      compiler.hooks.done.tap('Plugin1', compilation => {
+        console.log('done.tap 111');
+      });
+    }
   }
-}
-module.exports = Plugin1;
+  module.exports = Plugin1;
   ```
   </li>
   <li><code>webpack.config.js </code>中
   
   ```ts
   const Plugin1 = require('./plugins/Plugin1');
-module.exports = {
-  plugins: [new Plugin1()],
-};
-```
+    module.exports = {
+    plugins: [new Plugin1()],
+  };
+  ```
   </li>
   <li><code>yarn webpack </code>会看到输出</li>
 </ol>
@@ -172,16 +172,16 @@ module.exports = {
   <li>新建 plugins/Plugin1
   
   ```ts
-class Plugin2 {
-  apply(compiler) {
-    //thisCompilation 初始化compilation
-    compiler.hooks.thisCompilation.tap('Plugin2', compilation => {
-      debugger;
-      console.log(compilation);
-    });
+  class Plugin2 {
+    apply(compiler) {
+      //thisCompilation 初始化compilation
+      compiler.hooks.thisCompilation.tap('Plugin2', compilation => {
+        debugger;
+        console.log(compilation);
+      });
+    }
   }
-}
-module.exports = Plugin2;
+  module.exports = Plugin2;
   ```
   </li>
   <li><code>为了方便清晰的看到compilation对象</code> node 以调试模式运行 webpack.js,并在首行停住</li>
@@ -197,13 +197,13 @@ module.exports = Plugin2;
   <li>Plugin2.js
   
   ```ts
-const fs = require('fs');
-const util = require('util');
-const path = require('path');
-const webpack = require('webpack');
-const { RawSource } = webpack.sources;
-//将fs异步方法变成基于promise风格的异步代码
-const readFile = util.promisify(fs.readFile);
+  const fs = require('fs');
+  const util = require('util');
+  const path = require('path');
+  const webpack = require('webpack');
+  const { RawSource } = webpack.sources;
+  //将fs异步方法变成基于promise风格的异步代码
+  const readFile = util.promisify(fs.readFile);
 
 class Plugin2 {
 apply(compiler) {
@@ -248,7 +248,7 @@ module.exports = Plugin2;
 ```ts
 const Plugin2 = require('./plugins/Plugin2');
 module.exports = {
-plugins: [new Plugin2()],
+  plugins: [new Plugin2()],
 };
 ````
 
@@ -266,52 +266,52 @@ plugins: [new Plugin2()],
   <li>webpack.config.js
   
   ```ts
-const CopyWebPackPlugin = require('./plugins/CopyWebPackPlugin');
-module.exports = {
-  plugins: [
-    new CopyWebPackPlugin({
-      from: 'public',
-      to: 'css',
-      ignore: ['**/index.html'], //任意目录下的index.html都会被忽略
-    }),
-  ],
-};
+  const CopyWebPackPlugin = require('./plugins/CopyWebPackPlugin');
+  module.exports = {
+    plugins: [
+      new CopyWebPackPlugin({
+        from: 'public',
+        to: 'css',
+        ignore: ['**/index.html'], //任意目录下的index.html都会被忽略
+      }),
+    ],
+  };
   ```
   </li>
   <li>新建 plugins/copyPluginSchema.json 文件
   
   ```ts
-{
+  {
     "type": "object",
     "properties":{
-       "from":{
+      "from":{
         "type":"string"
-       },
-       "to":{
+      },
+      "to":{
         "type":"string"
-       },
-       "ignore":{
+      },
+      "ignore":{
         "type":"array"
-       }
+      }
     },
     "additionalProperties":false
-}
+  }
   ```
   </li>
   <li>新建 plugins/CopyWebPackPlugin.js 文件
   
   ```ts
-const path = require('path');
-const fs = require('fs');
-const { promisify } = require('util');
-const webpack = require('webpack');
-const { RawSource } = webpack.sources;
-//globby 匹配文件列表 并且根据自己的规则忽略一些文件
-const globby = require('globby');
-const { validate } = require('schema-utils');
-const schema = require('./copyPluginSchema.json');
-const { Compilation } = require('webpack');
-const readFile = promisify(fs.readFile);
+  const path = require('path');
+  const fs = require('fs');
+  const { promisify } = require('util');
+  const webpack = require('webpack');
+  const { RawSource } = webpack.sources;
+  //globby 匹配文件列表 并且根据自己的规则忽略一些文件
+  const globby = require('globby');
+  const { validate } = require('schema-utils');
+  const schema = require('./copyPluginSchema.json');
+  const { Compilation } = require('webpack');
+  const readFile = promisify(fs.readFile);
 
 class CopyWebPackPlugin {
 constructor(options = {}) {
@@ -398,19 +398,19 @@ module.exports = CopyWebPackPlugin;
 <ol>
 <li>src/index.html
 
-```ts
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <img src="../static/WechatLogo.jpeg">
-</body>
-</html>
+```html
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+    </head>
+    <body>
+      <img src="../static/WechatLogo.jpeg">
+    </body>
+  </html>
 ````
 
   </li>

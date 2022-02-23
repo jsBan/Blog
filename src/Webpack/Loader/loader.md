@@ -177,20 +177,20 @@ module.exports = function (content, map, meta) {
   <li>loader3.js
   
   ```ts
-  const { getOptions } = require('loader-utils');
-  const { validate } = require('schema-utils');
-  const schema = require('./schema.json');
+    const { getOptions } = require('loader-utils');
+    const { validate } = require('schema-utils');
+    const schema = require('./schema.json');
 
-module.exports = function(content, map, meta) {
-console.log('333');
-const options = getOptions(this);
-console.log(options);
-//校验 options 是否合法, 第三个参数是为了不合法时提示更友好
-validate(schema, options, {
-name: 'loader3',
-});
-return content;
-};
+    module.exports = function(content, map, meta) {
+      console.log('333');
+      const options = getOptions(this);
+      console.log(options);
+      //校验 options 是否合法, 第三个参数是为了不合法时提示更友好
+      validate(schema, options, {
+        name: 'loader3',
+      });
+      return content;
+    };
 
 ````
 </li>
@@ -217,31 +217,31 @@ return content;
   <li>新建 loaders/babelLoader.js
   
   ```ts
-  const { getOptions } = require('loader-utils');
-  const { validate } = require('schema-utils');
-  const babel = require('@babel/core');
-  const util = require('util');
+    const { getOptions } = require('loader-utils');
+    const { validate } = require('schema-utils');
+    const babel = require('@babel/core');
+    const util = require('util');
 
-const schema = require('./babelSchema.json');
-//babel.transform 用来编译代码的异步方法
-//util.promisify 将普通的异步方法转换为基于 promise 的异步方法
-const transform = util.promisify(babel.transform);
+    const schema = require('./babelSchema.json');
+    //babel.transform 用来编译代码的异步方法
+    //util.promisify 将普通的异步方法转换为基于 promise 的异步方法
+    const transform = util.promisify(babel.transform);
 
-module.exports = function(content, map, meta) {
-//获取 options
-const options = getOptions(this) || {};
-//校验 babel 的 options 配置
-validate(schema, options, {
-name: 'Babel Loader',
-});
-// 创建异步
-const callback = this.async();
-//使用 babel 编译代码
-transform(content, options).then(({ code, map }) => {
-callback(null, code, map, meta);
-}).catch(e => callback(e));
-return content;
-};
+    module.exports = function(content, map, meta) {
+      //获取 options
+      const options = getOptions(this) || {};
+      //校验 babel 的 options 配置
+      validate(schema, options, {
+        name: 'Babel Loader',
+      });
+      // 创建异步
+      const callback = this.async();
+      //使用 babel 编译代码
+      transform(content, options).then(({ code, map }) => {
+        callback(null, code, map, meta);
+      }).catch(e => callback(e));
+      return content;
+    };
 
 ````
 </li>
