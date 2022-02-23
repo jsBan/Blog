@@ -4,7 +4,7 @@ hero:
   desc: About front-end, node
   actions:
     - text: Go to Blog Now
-      link: /Blog
+      link: /Interview
 features:
   - title: Interview
     desc: About front-end Interview collection

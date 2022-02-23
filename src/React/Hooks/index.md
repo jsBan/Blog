@@ -1,4 +1,10 @@
-# React Hooks
+---
+title: Hooks
+nav:
+  group: 2
+---
+
+### Hooks
 
 ## useState()
 
@@ -20,17 +26,17 @@ useEffect()里面的第一个参数，也就是函数
 ```js
 useEffect(() => {
   return () => {
-    console.log('Trigger when componentWillUnmount');
-  };
-}, []);
+    console.log('Trigger when componentWillUnmount')
+  }
+}, [])
 ```
 
 当组件卸载的时候会执行`useEffect()` 第一个参数函数里面的返回的的函数, 即
 
 ```js
-() => {
-  console.log('Trigger when componentWillUnmount');
-};
+;() => {
+  console.log('Trigger when componentWillUnmount')
+}
 ```
 
 ## useContext
@@ -45,11 +51,11 @@ const themes = {
     foreground: '#ffffff',
     background: '#222222',
   },
-};
+}
 
-const MyContext = React.createContext(themes.light);
+const MyContext = React.createContext(themes.light)
 
-useContext(MyContext);
+useContext(MyContext)
 ```
 
 `useContext` 的参数是 `React.createContext()` 返回值，不能是 `MyContext.Provider` 或者 `MyContext.Consumer`

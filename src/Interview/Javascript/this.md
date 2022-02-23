@@ -1,6 +1,3 @@
----
-order: 1
----
 ## This
 
 当调用括号的左边不是引用类型而是其它类型，这个值自动设置为 null，结果为全局对象。
@@ -10,23 +7,23 @@ order: 1
 ```js
 var fullname = 'John William'
 var obj = {
-    fullname: 'Collin Ihrig',
-    prop: {
-        fullname: 'Aurelio De Rosa',
-        getFullname: function () {
-            return this.fullname
-        }
-    }
+  fullname: 'Collin Ihrig',
+  prop: {
+    fullname: 'Aurelio De Rosa',
+    getFullname: function() {
+      return this.fullname
+    },
+  },
 }
 console.log(obj.prop.getFullname())
 var test = obj.prop.getFullname
 test()
 test.bind(obj.prop)()
-"AU"
+;('AU')
 test.call(obj.prop)
-"AU"
+;('AU')
 test.apply(obj.prop)
-"AU"
+;('AU')
 
 // bind只是绑定this
 // call or apply is bind this and then execute the function

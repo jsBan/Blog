@@ -1,4 +1,4 @@
-### 重构思路
+#### Vuejs 改造 vuets
 
 <ol>
 <li>ssy-new-ide 项目是用 vue+js 的编程方式进行构建的</li>
