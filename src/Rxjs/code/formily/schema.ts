@@ -45,6 +45,11 @@ export default {
       name: 'c',
       title: 'C',
       'x-component': 'input',
+      'x-rules': {
+        required: true,
+        extra: '校验模板注入变量',
+        message: 'xxxxxxxxxxxxxxx',
+      },
     },
   },
 }
