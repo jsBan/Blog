@@ -1,4 +1,4 @@
-### Vue 指令
+### 指令
 
 指令 (Directives) 是带有 `v-` 前缀的特殊 attribute。指令 attribute 的值预期是 <strong>单个 JavaScript 表达式</strong> ' (`v-for` 是例外情况，稍后我们再讨论)。<br />
 指令的职责是，当表达式的值改变时，将其产生的连带影响，响应式地作用于 DOM。回顾我们在介绍 <a href="https://learning.dcloud.io/#/?vid=6">视频</a> 中看到的例子：

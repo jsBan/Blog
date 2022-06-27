@@ -1,4 +1,4 @@
-#### Vuejs 改造 vuets
+### 改造
 
 <ol>
 <li>ssy-new-ide 项目是用 vue+js 的编程方式进行构建的</li>
