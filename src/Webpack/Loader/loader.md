@@ -5,7 +5,7 @@ group:
 
 ### Loader
 
-视频链接: <a>https://www.bilibili.com/video/BV1cv411C74F?p=2&spm_id_from=pageDriver</a> P12-P16
+<a href="https://www.bilibili.com/video/BV1cv411C74F?p=2&spm_id_from=pageDriver">视频链接</a> P12-P16
 
 ### 自定义 loader
 
@@ -24,7 +24,7 @@ console.log('dddddddddd');
 //content 文件的内容
 //map  文件的sourceMap的信息
 //meta 文件的一些源信息
-module.exports = function (content, map, meta) {
+module.exports = function(content, map, meta) {
   console.log(content)
   return content
 }
@@ -144,7 +144,7 @@ module.exports = function (content, map, meta) {
 
 ```ts
 const { getOptions } = require('loader-utils')
-module.exports = function (content, map, meta) {
+module.exports = function(content, map, meta) {
   console.log('333')
   //接收this参数
   const options = getOptions(this)
@@ -280,7 +280,7 @@ module.exports = function (content, map, meta) {
 </ol>
 
 ```ts
-module.exports = (context) => {
+module.exports = context => {
   return context.replace('bind', 'on')
 }
 ```

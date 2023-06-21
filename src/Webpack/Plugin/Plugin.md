@@ -12,7 +12,7 @@ group:
   <li>webpack.HashedModulesPlugin--保持 module.id 的稳定 chunkHash 能保正的是改动业务代码第三方包的 hash 不会改动，当模块改了引入的包的数量,模块的 chunkhash 还是会变</li>
   <li>webpack.NoEmitOnErrorPlugin -屏蔽错误 webpack 打包遇到错误会终端编译</li>
   <li>webpack.providerPlugin--提供全局的 plugin</li>
-  <li>copy-webpack-plugin --帮助拷贝内容 webpack 只会把它处理的资源放到 dist 中 视频链接: <a>https://www.bilibili.com/video/BV1cv411C74F?p=2&spm_id_from=pageDriver</a> P17-P23</li>
+  <li>copy-webpack-plugin --帮助拷贝内容 webpack 只会把它处理的资源放到 dist 中 <a href="https://www.bilibili.com/video/BV1cv411C74F?p=2&spm_id_from=pageDriver">视频链接</a> P17-P23</li>
 </ol>
 
 complier 和 compilation compiler 是 webpack 的主要引擎， 拓展自 tapable 类
