@@ -24,7 +24,7 @@ jobs:
       # 打包代码
       - name: Build
         run: |
-          yarn      
+# yarn      
           yarn build
       # 部署到github
       - name: Deploy to Github
