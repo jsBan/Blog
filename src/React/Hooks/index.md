@@ -33,7 +33,7 @@ useEffect(() => {
 
 当组件卸载的时候会执行`useEffect()` 第一个参数函数里面的返回的的函数, 即
 
-```js
+```ts
 ;() => {
   console.log('Trigger when componentWillUnmount')
 }
@@ -41,7 +41,7 @@ useEffect(() => {
 
 ## useContext
 
-```js
+```ts
 const themes = {
   light: {
     foreground: '#000000',
@@ -134,29 +134,37 @@ const App = () => {
 
 useLayoutEffect
 
-```js
-const Message = ({boxRef, children}) => {
-  const msgRef = React.useRef(null);
+```tsx
+const Message = ({ boxRef, children }) => {
+  const msgRef = React.useRef(null)
   React.useLayoutEffect(() => {
-    const rect = boxRef.current.getBoundingClientRect();
-    msgRef.current.style.top = `${rect.height + rect.top}px`;
-  }, []);
+    const rect = boxRef.current.getBoundingClientRect()
+    msgRef.current.style.top = `${rect.height + rect.top}px`
+  }, [])
 
-  return <span ref={msgRef} className="msg">{children}</span>;
-};
+  return (
+    <span ref={msgRef} className="msg">
+      {children}
+    </span>
+  )
+}
 
 const App = () => {
-  const [show, setShow] = React.useState(false);
-  const boxRef = React.useRef(null);
+  const [show, setShow] = React.useState(false)
+  const boxRef = React.useRef(null)
 
   return (
     <div>
-      <div ref={boxRef} className="box" onClick={() => setShow(prev => !prev)}>Click me</div>
+      <div ref={boxRef} className="box" onClick={() => setShow(prev => !prev)}>
+        Click me
+      </div>
       {show && <Message boxRef={boxRef}>Foo bar baz</Message>}
     </div>
-  );
-};
+  )
+}
+```
 
+```css
 .box {
   position: absolute;
   width: 100px;
