@@ -1,8 +1,8 @@
 import { defineConfig } from 'dumi'
 
 export default defineConfig({
-  // base: '/jsban.github.io/',
-  // publicPath: '/jsban.github.io/',
+  base: '/blog/',
+  publicPath: '/blog/',
   title: 'JsBan Blog',
   mode: 'site',
   logo:
