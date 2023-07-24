@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: 18.x
       # 打包代码
-      - name: docs:build
+      - name: build
         run: |
           npm install      
           npm run docs:build
