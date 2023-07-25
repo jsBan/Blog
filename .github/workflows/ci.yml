@@ -16,7 +16,7 @@ jobs:
       # 拉代码
       - name: Checkout code
         uses: actions/checkout@v1
-      # 下载node，我这里指定了15.x，这个版本可随意，高于 dumi 规定的node版本即可
+      # 下载node，我这里指定了16.x，这个版本可随意，高于 dumi 规定的node版本即可
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:

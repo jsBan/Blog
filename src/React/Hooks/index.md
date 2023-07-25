@@ -134,7 +134,7 @@ const App = () => {
 
 useLayoutEffect
 
-```tsx
+```ts
 const Message = ({ boxRef, children }) => {
   const msgRef = React.useRef(null)
   React.useLayoutEffect(() => {
@@ -162,9 +162,7 @@ const App = () => {
     </div>
   )
 }
-```
 
-```css
 .box {
   position: absolute;
   width: 100px;
