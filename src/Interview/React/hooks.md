@@ -28,14 +28,14 @@
 
 <ol>
   <li>
-    <strong>不使用：</strong>该组件，维护了两个 state ，可以看到 getNum 的计算仅仅跟 count 有关，但是现在无论是 count 还是 val 变化，都会导致 getNum 重新计算，所以这里我们希望 val 修改的时候，不需要再次计算，这种情况下我们可以使用 useMemo。
+    <strong>不使用：</strong>该组件，维护了两个 state ，可以看到 getNum 的计算仅仅跟 count 有关，但是现在无论是 count 还是 val 变化，都会导致 getNum 重新计算，所以这里我们希望 val 修改的时候，不需要再次计算，这种情况下我们可以使用 <strong>useMemo</strong>
     <br />
     <br />
     <code src="./code/useMemo/example1.tsx"></code>
   </li>
   <br />
   <li>
-    <strong>使用：</strong>使用 useMemo 后，并将 count 作为依赖值传递进去，此时仅当 count 变化时才会重新执行 getNum。
+    <strong>使用：</strong>使用 <strong>useMemo</strong> 后，并将 count 作为依赖值传递进去，此时仅当 count 变化时才会重新执行 getNum。
     <br />
     <br />
     <code src="./code/useMemo/example1.tsx"></code>
@@ -46,16 +46,22 @@
 
 <ol>
   <li>
-    有一个父组件，其中包含子组件，子组件接收一个函数作为 props ；通常而言，如果父组件更新了，子组件也会执行更新；但是大多数场景下，更新是没有必要的，我们可以借助 <code> useCallback</code> 来返回函数，然后把这个函数作为 props 传递给子组件；这样，子组件就能避免不必要的更新
+    有一个父组件，其中包含子组件，子组件接收一个函数作为 props ；通常而言，如果父组件更新了，子组件也会执行更新；但是大多数场景下，更新是没有必要的，我们可以借助 <strong>useCallback</strong> 来返回函数，然后把这个函数作为 props 传递给子组件；这样，子组件就能避免不必要的更新
     <br />
     <br />
     <code src="./code/useCallback/example1.tsx"></code>
   </li>
   <br />
   <li>
-    使用 <code>useCallback</code> 之后，仅当 count 发生变化时 Child 组件才会重新渲染，而 val 变化时，Child 组件是不会重新渲染的。<code>useCallback</code>使用的第二个例子：测量 DOM 节点
+    使用 <strong>useCallback</strong> 之后，仅当 count 发生变化时 Child 组件才会重新渲染，而 val 变化时，Child 组件是不会重新渲染的。<strong>useCallback</strong>使用的第二个例子：测量 DOM 节点
     <br />
     <br />
     <code src="./code/useCallback/example2.tsx"></code>
+  </li>
+  <li>
+    获取 DOM 节点的位置或是大小的基本方式是使用 <strong>callback ref</strong>。每当 ref 被附加到一个另一个节点，React 就会调用 <strong>callback</strong> 在这个案例中，我们没有选择使用 useRef，因为当 ref 是一个对象时它并不会把当前 ref 的值的 变化 通知到我们。使用 <strong>callback ref</strong> 可以确保 即便子组件延迟显示被测量的节点 (比如为了响应一次点击)，我们依然能够在父组件接收到相关的信息，以便更新测量结果。注意到我们传递了 [] 作为 <strong>useCallback</strong> 的依赖列表。这确保了 <strong>ref callback</strong> 不会在再次渲染时改变，因此 React 不会在非必要的时候调用它。在此示例中，当且仅当组件挂载和卸载时，<strong>callback ref</strong> 才会被调用，因为渲染的标签组件在整个重新渲染期间始终存在。如果你希望在每次组件调整大小时都收到通知，则可能需要使用 <strong>ResizeObserver</strong> 或基于其构建的第三方 Hook。如果你愿意，你可以 把这个逻辑抽取出来作为 一个可复用的 Hook:
+    <br />
+    <br />
+    <code src="./code/useCallback/example3.tsx"></code>
   </li>
 </ol>
