@@ -4,7 +4,7 @@ nav:
   group: 2
 ---
 
-### Hooks
+## Hooks
 
 ## useState()
 
@@ -74,7 +74,7 @@ useContext(MyContext)
 
 `useMemo`返回的是计算过的**值或函数**，用来做组件内部高开销计算的优化，使得组件内部不需要每次渲染都触发高开销的计算
 
-### useCallback 对比 useMemo
+## useCallback 对比 useMemo
 
 `useCallback` 用来做父组件向 **子组件** 传递函数时候做优化使用
 

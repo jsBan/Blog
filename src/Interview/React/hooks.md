@@ -1,13 +1,13 @@
 ## Hooks
 
-### react hooks 是什么？
+## react hooks 是什么？
 
 <ol>
   <li>Hook 是 React 16.8 的新增特性</li>
   <li>Hooks 本质上就是一类特殊的函数，它们可以为你的函数型组件（function component）注入一些特殊的功能，让您在不编写类的情况下使用 state(状态) 和其他 React 特性。</li>
 </ol>
 
-### react hooks 解决了什么问题？
+## react hooks 解决了什么问题？
 
 <ol>
   <li><strong>​状态逻辑难以复用：</strong>业务变得复杂之后，组件之间共享状态变得频繁，组件复用和状态逻辑管理就变得十分复杂。使用 redux 也会加大项目的复杂度和体积。</li>
@@ -15,7 +15,7 @@
   <li><strong>类的 this 指向性问题：</strong>我们用 class 来创建 react 组件时，为了保证 this 的指向正确，我们要经常写这样的代码：<code>​const that = this</code>​，或者是​<code>​this.handleClick = this.handleClick.bind(this)></code>​​；一旦 <code>this</code> 使用错误，各种 <code>bug</code> 就随之而来。</li>
 </ol>
 
-### useMemo 和 useCallBack 的区别
+## useMemo 和 useCallBack 的区别
 
 `useMemo`和`useCallback`都是`reactHook`提供的两个 API，用于缓存数据，优化性能;两者接收的参数都是一样的，第一个参数表示一个回调函数，第二个表示依赖的数据。
 
@@ -65,3 +65,21 @@
     <code src="./code/useCallback/example3.tsx"></code>
   </li>
 </ol>
+
+## 简单总结
+
+| hook                | 功能                                                       |
+| ------------------- | ---------------------------------------------------------- |
+| useState            | 设置和改变 state，代替原来的 state 和 setState             |
+| useReducer          | 代替原来 redux 里的 reducer，方便管理状态逻辑              |
+| useEffect           | 引入具有副作用的操作，类比原来的生命周期                   |
+| useLayoutEffect     | 与 useEffect 作用相同，但它会同步调用 effect               |
+| useMemo             | 可根据状态变化控制方法执行，优化无用渲染，提高性能         |
+| useCallback         | 类似 useMemo，useMemo 优化传值，usecallback 优化传入的方法 |
+| useContext          | 上下文爷孙组件及更深层组件传值                             |
+| useRef              | 返回一个可变的 ref 对象                                    |
+| useImperativeHandle | 可以让你在使用 ref 时自定义暴露给父组件的实例值            |
+
+## Tips
+
+<a href="/react/hooks">React 相关知识点 →</a>
