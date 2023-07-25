@@ -23,7 +23,9 @@ jobs:
           node-version: 16.x
       # 打包代码
       - name: Build
-        run: yarn build
+        run: |
+          yarn
+          yarn build
       # 部署到github
       - name: Deploy to Github
         uses: JamesIves/github-pages-deploy-action@4.0.0
